@@ -1,0 +1,43 @@
+{
+	"events": [	{
+			"eventName": "Ruby meetup",
+			"startDate": "2016-06-23T19:00:00+09:00",
+			"endDate": "2016-06-23T19:00:00+09:00",
+			"location": {
+				"address1": "Derry St",
+				"address2": "Kensington",
+				"address3": "",
+				"City": "London",
+				"County": "",
+				"PostCode": "W8 5HY",
+				"Country": "UK"
+			},
+			"relevantTopics": [
+				"topic1",
+				"topic2",
+				"topic3"
+			]
+		},
+		{
+			"eventName": "JavaScript meetup",
+			"startDate": "2016-06-23T19:00:00+09:00",
+			"endDate": "2016-06-23T19:00:00+09:00",
+			"location": {
+				"address1": "Derry St",
+				"address2": "Kensington",
+				"address3": "",
+				"City": "London",
+				"County": "",
+				"PostCode": "W8 5HY",
+				"Country": "UK"
+			},
+			"relevantTopics": [
+				"topic1",
+				"topic2",
+				"topic3"
+			]
+		}
+	]
+}
+
+
