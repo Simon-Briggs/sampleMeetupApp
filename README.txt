@@ -14,4 +14,6 @@ For the filter, the user can specify the following:
 3 - Topic of interest: 0 - many
 
 A save function saves the user's selected city, date and topic filters to a list of favorite filters.
+The save function requires an additional parameter to above:
+- filterName
 
