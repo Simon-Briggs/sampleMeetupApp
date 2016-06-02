@@ -1,7 +1,8 @@
 {
-	"filterName": "filterName",
-	"cities" : [],
-	"startDate": "2016-06-23T19:00:00+09:00",
-	"endDate": "2016-06-23T19:00:00+09:00",
-	"topics": []
+	"filters": [{
+		"cities" : [],
+		"startDate": "2016-06-23T19:00:00+09:00",
+		"endDate": "2016-06-23T19:00:00+09:00",
+		"topics": []
+	}]
 }
