@@ -1,0 +1,17 @@
+/**
+Some minimal CSS
+*/
+
+.ul {
+	border: 1px solid black;
+	padding: 24px;
+}
+
+.ul--li {
+    list-style-type: none;
+}
+
+.ul--li--location {
+	list-style-type: none;
+	padding-left: 20px;
+}
