@@ -49,32 +49,7 @@ var EventList = React.createClass({
  * Generate the filter bar
  */
 var FilterForm = React.createClass({
-	getFilters: function () {
-		var xhttp = new XMLHttpRequest();
-		var _this = this;
-		xhttp.onreadystatechange = function () {
-			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log(JSON.parse(xhttp.response).filters);
-				//TODO: check JSON before parsing
-				_this.setState({ events: JSON.parse(xhttp.response).filters });
-			}
-		};
-		xhttp.open("GET", "/filter", true);
-		xhttp.send();
-	},
-	saveCurrentFilter: function () {
-		var xhttp = new XMLHttpRequest();
-		var _this = this;
-		xhttp.onreadystatechange = function () {
-			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log("Filter saved successfully");
-			}
-		};
-		xhttp.open("POST", "/filter", true);
 
-		var params = "city=" + this.state.city;
-		xhttp.send(params);
-	},
 	getInitialState: function () {
 		return {};
 	},
@@ -83,9 +58,8 @@ var FilterForm = React.createClass({
 		this.props.updateFilter();
 	},
 	handleSave: function (e) {
-		console.log("save	");
 		e.preventDefault();
-		this.saveCurrentFilter();
+		this.props.saveCurrentFilter();
 	},
 	handleChange: function (name, event) {
 		this.props.handleFilterChange(name, event);
@@ -93,33 +67,40 @@ var FilterForm = React.createClass({
 	render: function () {
 		return (
 			<form onSubmit={this.handleSubmit}>
+				<label>City: </label>
 				<input type="text"
 					value={this.state.city}
 					onChange={this.handleChange.bind(this, 'city') }
 					placeholder="City" />
+				<label>Start Date: </label>
 				<input type="date"
 					value={this.state.startDate}
 					onChange={this.handleChange.bind(this, 'startDate') }
 					placeholder="Start Date" />
+				<label>End Date: </label>
 				<input type="date"
 					value={this.state.endDate}
 					onChange={this.handleChange.bind(this, 'endDate') }
 					placeholder="End Date" />
+				<label>Topics: </label>
 				<input type="text"
 					value={this.state.topics}
 					onChange={this.handleChange.bind(this, 'topics') }
 					placeholder="Topics" />
+				<label>Paging: </label>
 				<input type="number"
 					value={this.state.paging}
 					onChange={this.handleChange.bind(this, 'paging') }
-					placeholder="Paging" />
+					placeholder="Number of events" />
 				<input type="submit" value="Update!" />
-
-				<input type="number"
-					value={this.state.filterName}
-					onChange={this.handleChange.bind(this, 'filterName') }
-					placeholder="Filter Name" />
-				<input type="button" onClick={this.handleSave} value="Save" />
+				<div>
+					<label>Save as: </label>
+					<input type="text"
+						value={this.state.filterName}
+						onChange={this.handleChange.bind(this, 'filterName') }
+						placeholder="Filter Name" />
+					<input type="button" onClick={this.handleSave} value="Save" />
+				</div>
 			</form>
 		);
 	}
@@ -136,7 +117,7 @@ var EventViewer = React.createClass({
             filter: []
         };
     },
-	
+
 	componentDidMount: function () {
 		this.getEvents();
 	},
@@ -154,20 +135,41 @@ var EventViewer = React.createClass({
 		xhttp.open("GET", "/events", true);
 		xhttp.send();
 	},
-
-	//Send a POST request back to the server, updating the EventList with the new Filters
-	handleFilterUpdate: function () {
+	//Get list of initial filters
+	getFilters: function () {
 		var xhttp = new XMLHttpRequest();
 		var _this = this;
 		xhttp.onreadystatechange = function () {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log(JSON.parse(xhttp.response).events);
+				console.log(JSON.parse(xhttp.response).filters);
 				//TODO: check JSON before parsing
-				_this.setState({ events: JSON.parse(xhttp.response).events });
+				_this.setState({ events: JSON.parse(xhttp.response).filters });
 			}
 		};
-		xhttp.open("POST", "/events", true);
-
+		xhttp.open("GET", "/filter", true);
+		xhttp.send();
+	},
+	saveCurrentFilter: function () {
+		this.sendFilterUpdate(true);
+	},
+	//Send a POST request back to the server, updating the EventList with the new Filters
+	sendFilterUpdate: function (isSave) {
+		var xhttp = new XMLHttpRequest();
+		var _this = this;
+		xhttp.onreadystatechange = function () {
+			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				//TODO: check JSON before parsing
+				if (JSON.parse(xhttp.response).events) {
+					_this.setState({ events: JSON.parse(xhttp.response).events });
+				}
+			}
+		};
+		console.log("is save", isSave);
+		if (isSave) {
+			xhttp.open("POST", "/filter", true);
+		} else {
+			xhttp.open("POST", "/events", true);
+		}
 		console.log("state", this.state);
 		var params = "";
 		if (this.state.cityFilter) {
@@ -190,7 +192,10 @@ var EventViewer = React.createClass({
 			if (params) params += "&";
 			params += "paging=" + this.state.pagingFilter
 		};
-		//TODO: add remaining filters here
+		if (this.state.filterNameFilter && isSave) {
+			if (params) params += "&";
+			params += "filterName=" + this.state.filterNameFilter
+		};
 		xhttp.send(params);
 	},
 	handleFilterChange: function (name, event) {
@@ -209,7 +214,7 @@ var EventViewer = React.createClass({
 		return (
 			<div>
 				<h1>Sample Event Viewer Application</h1>
-				<FilterForm updateFilter={this.handleFilterUpdate} handleFilterChange={this.handleFilterChange}/>
+				<FilterForm updateFilter={this.sendFilterUpdate} saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
 				<EventList events={this.state.events}/>
 			</div>
 		);
