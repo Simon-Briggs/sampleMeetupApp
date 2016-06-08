@@ -14,9 +14,16 @@ app.get('/', function (req, res) {
 app.get('/events', function (req, res) {
 	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
 });
+app.post('/events', function (req, res) {
+	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
+});
 
 app.get('/filter', function (req, res) {
 	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
+});
+
+app.post('/filter', function (req, res) {
+	res.end('{"success" : "Updated Successfully", "status" : 200}');
 });
 
 app.listen(3000, function () {

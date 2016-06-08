@@ -3,7 +3,7 @@
 			"eventId": "1",
 			"eventName": "Ruby meetup",
 			"startDate": "2016-06-23T19:00:00+09:00",
-			"endDate": "2016-06-23T19:00:00+09:00",
+			"endDate": "2016-06-23T22:00:00+09:00",
 			"location": {
 				"address1": "Derry St",
 				"address2": "Kensington",
@@ -22,8 +22,8 @@
 		{
 			"eventId": "2",
 			"eventName": "JavaScript meetup",
-			"startDate": "2016-06-23T19:00:00+09:00",
-			"endDate": "2016-06-23T19:00:00+09:00",
+			"startDate": "2016-06-25T11:00:00+09:00",
+			"endDate": "2016-06-26T15:30:00+09:00",
 			"location": {
 				"address1": "Derry St",
 				"address2": "Kensington",
