@@ -19,7 +19,7 @@ app.post('/events', function (req, res) {
 });
 
 app.get('/filter', function (req, res) {
-	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
+	res.sendFile(path.join(__dirname + '/sampleFilter.json'));
 });
 
 app.post('/filter', function (req, res) {

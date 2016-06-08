@@ -7,31 +7,15 @@
  * Generate each of the rows in the table
  */
 var EventList = React.createClass({
-	getEvents: function () {
-		var xhttp = new XMLHttpRequest();
-		var _this = this;
-		xhttp.onreadystatechange = function () {
-			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log(JSON.parse(xhttp.response).events);
-				//TODO: check JSON before parsing
-				_this.setState({ events: JSON.parse(xhttp.response).events })
-			}
-		};
-		xhttp.open("GET", "/events", true);
-		xhttp.send();
-	},
-	componentDidMount: function () {
-		this.getEvents();
-	},
 	render: function () {
 		// Loop through the events, JSON object and print out the table
 
-		console.log(this.state);
-		if (!this.state || !this.state.events) {
+		console.log("rendering table", this.props);
+		if (!this.props || !this.props.events) {
 			console.log("No events found");
 			return <span>Loading events...</span>
 		}
-		var events = this.state.events.map(function (event, index) {
+		var events = this.props.events.map(function (event, index) {
 
 			//Parse the JSON so it is usable by our HTML
 			var tableData = [];
@@ -146,11 +130,31 @@ var FilterForm = React.createClass({
  */
 var EventViewer = React.createClass({
     getInitialState: function () {
+		this.getEvents();
         return {
-            listItems: ['Loading...'],
+            events: [],
             filter: []
         };
     },
+	
+	componentDidMount: function () {
+		this.getEvents();
+	},
+	//Get list of unfiltered events
+	getEvents: function () {
+		var xhttp = new XMLHttpRequest();
+		var _this = this;
+		xhttp.onreadystatechange = function () {
+			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				console.log(JSON.parse(xhttp.response).events);
+				//TODO: check JSON before parsing
+				_this.setState({ events: JSON.parse(xhttp.response).events })
+			}
+		};
+		xhttp.open("GET", "/events", true);
+		xhttp.send();
+	},
+
 	//Send a POST request back to the server, updating the EventList with the new Filters
 	handleFilterUpdate: function () {
 		var xhttp = new XMLHttpRequest();
@@ -206,7 +210,7 @@ var EventViewer = React.createClass({
 			<div>
 				<h1>Sample Event Viewer Application</h1>
 				<FilterForm updateFilter={this.handleFilterUpdate} handleFilterChange={this.handleFilterChange}/>
-				<EventList items={this.state.listItems}/>
+				<EventList events={this.state.events}/>
 			</div>
 		);
 	}
