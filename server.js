@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/events', function (req, res) {
-	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
+	res.sendFile(path.join(__dirname + '/sampleEvent.1.json'));
 });
 app.post('/events', function (req, res) {
 	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
@@ -23,7 +23,7 @@ app.get('/filter', function (req, res) {
 });
 
 app.post('/filter', function (req, res) {
-	res.end('{"success" : "Updated Successfully", "status" : 200}');
+	res.sendFile(path.join(__dirname + '/sampleFilter.json'));
 });
 
 app.listen(3000, function () {

@@ -45,6 +45,7 @@ var EventList = React.createClass({
 	}
 });
 
+
 /**
  * Generate the filter bar
  */
@@ -65,38 +66,39 @@ var FilterForm = React.createClass({
 		this.props.handleFilterChange(name, event);
 	},
 	render: function () {
+		console.log("filters", this.props.filters);
 		return (
 			<form onSubmit={this.handleSubmit}>
+				<div>
+					<label>Choose a saved filter: </label>
+					<select>
+						<option value="none">none</option>
+					</select>
+				</div>
 				<label>City: </label>
 				<input type="text"
-					value={this.state.city}
 					onChange={this.handleChange.bind(this, 'city') }
 					placeholder="City" />
 				<label>Start Date: </label>
 				<input type="date"
-					value={this.state.startDate}
 					onChange={this.handleChange.bind(this, 'startDate') }
 					placeholder="Start Date" />
 				<label>End Date: </label>
 				<input type="date"
-					value={this.state.endDate}
 					onChange={this.handleChange.bind(this, 'endDate') }
 					placeholder="End Date" />
 				<label>Topics: </label>
 				<input type="text"
-					value={this.state.topics}
 					onChange={this.handleChange.bind(this, 'topics') }
 					placeholder="Topics" />
 				<label>Paging: </label>
 				<input type="number"
-					value={this.state.paging}
 					onChange={this.handleChange.bind(this, 'paging') }
 					placeholder="Number of events" />
 				<input type="submit" value="Update!" />
 				<div>
 					<label>Save as: </label>
 					<input type="text"
-						value={this.state.filterName}
 						onChange={this.handleChange.bind(this, 'filterName') }
 						placeholder="Filter Name" />
 					<input type="button" onClick={this.handleSave} value="Save" />
@@ -114,7 +116,7 @@ var EventViewer = React.createClass({
 		this.getEvents();
         return {
             events: [],
-            filter: []
+            filters: []
         };
     },
 
@@ -158,9 +160,13 @@ var EventViewer = React.createClass({
 		var _this = this;
 		xhttp.onreadystatechange = function () {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				console.log("response", JSON.parse(xhttp.response));
 				//TODO: check JSON before parsing
 				if (JSON.parse(xhttp.response).events) {
 					_this.setState({ events: JSON.parse(xhttp.response).events });
+				}
+				if (JSON.parse(xhttp.response).filters) {
+					_this.setState({ filters: JSON.parse(xhttp.response).filters });
 				}
 			}
 		};
@@ -214,7 +220,7 @@ var EventViewer = React.createClass({
 		return (
 			<div>
 				<h1>Sample Event Viewer Application</h1>
-				<FilterForm updateFilter={this.sendFilterUpdate} saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
+				<FilterForm filters={this.state.filters} updateFilter={this.sendFilterUpdate} 	saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
 				<EventList events={this.state.events}/>
 			</div>
 		);

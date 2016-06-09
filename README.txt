@@ -63,3 +63,6 @@ The header of all requests will contain the authentication token returned by the
 
 Translations:
 This app will only support English
+
+Future Improvements to app:
+Check JSON before parsing
