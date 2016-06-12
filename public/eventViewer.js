@@ -135,7 +135,6 @@ var EventViewer = React.createClass({
 			currentFilter: []
         };
     },
-
 	componentDidMount: function () {
 		this.getEvents();
 		this.getFilters();
@@ -198,27 +197,27 @@ var EventViewer = React.createClass({
 		var params = "";
 		if (this.state.currentFilter.cities) {
 			if (params) params += "&";
-			params += "cities=" + this.state.currentFilter.cities
+			params += "cities=" +JSON.stringify(this.state.currentFilter.cities);
 		};
 		if (this.state.currentFilter.startDate) {
 			if (params) params += "&";
-			params += "startDate=" + this.state.currentFilter.startDate
+			params += "startDate=" + this.state.currentFilter.startDate;
 		};
 		if (this.state.currentFilter.endDate) {
 			if (params) params += "&";
-			params += "endDate=" + this.state.currentFilter.endDate
+			params += "endDate=" + this.state.currentFilter.endDate;
 		};
 		if (this.state.currentFilter.topics) {
 			if (params) params += "&";
-			params += "topics=" + this.state.currentFilter.topics
+			params += "topics=" + JSON.stringify(this.state.currentFilter.topics);
 		};
 		if (this.state.currentFilter.paging) {
 			if (params) params += "&";
-			params += "paging=" + this.state.currentFilter.paging
+			params += "paging=" + this.state.currentFilter.paging;
 		};
 		if (this.state.currentFilter.filterName && isSave) {
 			if (params) params += "&";
-			params += "filterName=" + this.state.currentFilter.filterName
+			params += "filterName='" + this.state.currentFilter.filterName +"'";
 		};
 		xhttp.send(params);
 	},
@@ -239,10 +238,15 @@ var EventViewer = React.createClass({
 		}
 	},
 	handleFilterChange: function (name, event) {
-		console.log(event.target.value, name);
+		var newValue = event.target.value;
+		console.log(newValue, name);
 		console.log("current", this.state.currentFilter);
 		var currentFilter = this.state.currentFilter;
-		currentFilter[name] = event.target.value.substr(0, 255);
+		//Convert cities and topics from CSV to array format
+		if(name == "cities" || name == "topics") {
+			newValue = newValue.split(',');
+		}
+		currentFilter[name] = newValue;
 		this.setState({ currentFilter: currentFilter });
 	},
 	render: function () {
