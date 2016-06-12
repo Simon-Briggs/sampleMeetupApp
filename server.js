@@ -11,10 +11,10 @@ app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/events', function (req, res) {
+app.get('/event', function (req, res) {
 	res.sendFile(path.join(__dirname + '/sampleEvent.1.json'));
 });
-app.post('/events', function (req, res) {
+app.post('/event', function (req, res) {
 	res.sendFile(path.join(__dirname + '/sampleEvent.json'));
 });
 

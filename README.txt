@@ -36,10 +36,10 @@ Pre-caching will be done when the server first starts up, re-running searches us
 
 REST API for App:
 
-GET /events
+GET /event
 Gets a list of unfiltered events, limited to the first 25 results
 
-POST /events
+POST /event
 body contains filter
 Gets a list of filtered events
 
@@ -51,18 +51,20 @@ body will contain new filter to save
 Add current filter to list of saved filters
 
 Beyond scope of this basic implementation, remaining CRUD operations on the collection level, as well as CRUD on the item level:
-PUT DELETE /events
+PUT DELETE /event
 PUT DELETE /filter
 GET PUT POST DELETE /topics
 
-GET PUT POST DELETE /events/eventName
+GET PUT POST DELETE /event/eventName
 GET PUT POST DELETE /filter/filterName
-GET PUT POST DELETE /topics/topicName
+GET PUT POST DELETE /topic/topicName
 
 The header of all requests will contain the authentication token returned by the user management service. 
 
 Translations:
 This app will only support English
 
-Future Improvements to app:
-Check JSON before parsing
+Future improvements to app:
+Check received JSON before parsing
+Seperate out text strings into a separate JSON file, for easier translation down the line
+Separate out xhr requests into a separate service for readability

@@ -143,7 +143,7 @@ var EventViewer = React.createClass({
 				_this.setState({ events: JSON.parse(xhttp.response).events })
 			}
 		};
-		xhttp.open("GET", "/events", true);
+		xhttp.open("GET", "/event", true);
 		xhttp.send();
 	},
 	//Get list of initial filters
@@ -183,7 +183,7 @@ var EventViewer = React.createClass({
 		if (isSave) {
 			xhttp.open("POST", "/filter", true);
 		} else {
-			xhttp.open("POST", "/events", true);
+			xhttp.open("POST", "/event", true);
 		}
 		console.log("state", this.state);
 		var params = "";
