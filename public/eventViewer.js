@@ -67,12 +67,20 @@ var FilterForm = React.createClass({
 	},
 	render: function () {
 		console.log("filters", this.props.filters);
+
+		var filters = this.props.filters.map(function (filter, index) {
+			return (
+				<option value="{filter.filterName}">{filter.filterName}</option>
+			);
+		});
+
 		return (
 			<form onSubmit={this.handleSubmit}>
 				<div>
 					<label>Choose a saved filter: </label>
 					<select>
 						<option value="none">none</option>
+						{filters}
 					</select>
 				</div>
 				<label>City: </label>
@@ -122,6 +130,7 @@ var EventViewer = React.createClass({
 
 	componentDidMount: function () {
 		this.getEvents();
+		this.getFilters();
 	},
 	//Get list of unfiltered events
 	getEvents: function () {
@@ -145,7 +154,7 @@ var EventViewer = React.createClass({
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
 				console.log(JSON.parse(xhttp.response).filters);
 				//TODO: check JSON before parsing
-				_this.setState({ events: JSON.parse(xhttp.response).filters });
+				_this.setState({ filters: JSON.parse(xhttp.response).filters });
 			}
 		};
 		xhttp.open("GET", "/filter", true);
@@ -220,11 +229,12 @@ var EventViewer = React.createClass({
 		return (
 			<div>
 				<h1>Sample Event Viewer Application</h1>
-				<FilterForm filters={this.state.filters} updateFilter={this.sendFilterUpdate} 	saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
+				<FilterForm filters={this.state.filters} updateFilter={this.sendFilterUpdate} saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
 				<EventList events={this.state.events}/>
 			</div>
 		);
 	}
 });
+
 // Now add all our react components to the screen:
 ReactDOM.render(<EventViewer />, document.getElementById('root'));

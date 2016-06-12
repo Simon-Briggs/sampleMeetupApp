@@ -1,9 +1,15 @@
 {
 	"filters": [{
-		"filterName" : "defaultFilter",
-		"cities" : [],
-		"startDate": "2016-06-23T19:00:00+09:00",
-		"endDate": "2016-06-23T19:00:00+09:00",
-		"topics": []
+		"filterName" : "default filter",
+		"cities" : ["London"],
+		"startDate": "2016-06-23T17:00:00+09:00",
+		"endDate": "2016-06-24T19:00:00+09:00",
+		"topics": ["Java"]
+	}, {
+		"filterName" : "Another filter",
+		"cities" : ["New York", "Paris"],
+		"startDate": "2016-07-23T19:00:00+09:00",
+		"endDate": "2016-07-23T21:30:00+09:00",
+		"topics": ["Javascript", "Web design"]
 	}]
 }
