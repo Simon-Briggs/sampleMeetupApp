@@ -66,11 +66,11 @@ var FilterForm = React.createClass({
 		this.props.handleFilterChange(name, event);
 	},
 	render: function () {
-		console.log("filters", this.props.filters);
+		console.log("rendering filter", this.props.filters);
 
-		var filters = this.props.filters.map(function (filter, index) {
+		var savedFilters = this.props.filters.map(function (filter, index) {
 			return (
-				<option value="{filter.filterName}">{filter.filterName}</option>
+				<option value={filter.filterName}>{filter.filterName}</option>
 			);
 		});
 
@@ -78,37 +78,45 @@ var FilterForm = React.createClass({
 			<form onSubmit={this.handleSubmit}>
 				<div>
 					<label>Choose a saved filter: </label>
-					<select>
+					<select onChange={this.props.handleSavedFilterChange}>
 						<option value="none">none</option>
-						{filters}
+						{savedFilters}
 					</select>
 				</div>
-				<label>City: </label>
+
+				<label>Cities: </label>
 				<input type="text"
-					onChange={this.handleChange.bind(this, 'city') }
-					placeholder="City" />
+					onChange={this.handleChange.bind(this, 'cities') }
+					placeholder="Cities"
+					value={this.props.currentFilter.cities} />
 				<label>Start Date: </label>
 				<input type="date"
 					onChange={this.handleChange.bind(this, 'startDate') }
-					placeholder="Start Date" />
+					placeholder="Start Date"
+					value={this.props.currentFilter.startDate} />
 				<label>End Date: </label>
 				<input type="date"
 					onChange={this.handleChange.bind(this, 'endDate') }
-					placeholder="End Date" />
+					placeholder="End Date"
+					value={this.props.currentFilter.endDate} />
 				<label>Topics: </label>
 				<input type="text"
 					onChange={this.handleChange.bind(this, 'topics') }
-					placeholder="Topics" />
+					placeholder="Topics"
+					value={this.props.currentFilter.topics} />
 				<label>Paging: </label>
 				<input type="number"
 					onChange={this.handleChange.bind(this, 'paging') }
-					placeholder="Number of events" />
+					placeholder="Number of events"
+					value= {this.props.currentFilter.paging}/>
 				<input type="submit" value="Update!" />
+
 				<div>
 					<label>Save as: </label>
 					<input type="text"
 						onChange={this.handleChange.bind(this, 'filterName') }
-						placeholder="Filter Name" />
+						placeholder="Filter Name"
+						value={this.props.currentFilter.filterName}/>
 					<input type="button" onClick={this.handleSave} value="Save" />
 				</div>
 			</form>
@@ -121,10 +129,10 @@ var FilterForm = React.createClass({
  */
 var EventViewer = React.createClass({
     getInitialState: function () {
-		this.getEvents();
         return {
             events: [],
-            filters: []
+            filters: [],
+			currentFilter: []
         };
     },
 
@@ -140,7 +148,7 @@ var EventViewer = React.createClass({
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
 				console.log(JSON.parse(xhttp.response).events);
 				//TODO: check JSON before parsing
-				_this.setState({ events: JSON.parse(xhttp.response).events })
+				_this.setState({ events: JSON.parse(xhttp.response).events });
 			}
 		};
 		xhttp.open("GET", "/event", true);
@@ -160,6 +168,7 @@ var EventViewer = React.createClass({
 		xhttp.open("GET", "/filter", true);
 		xhttp.send();
 	},
+	// Save the current filter, server side
 	saveCurrentFilter: function () {
 		this.sendFilterUpdate(true);
 	},
@@ -187,49 +196,61 @@ var EventViewer = React.createClass({
 		}
 		console.log("state", this.state);
 		var params = "";
-		if (this.state.cityFilter) {
+		if (this.state.currentFilter.cities) {
 			if (params) params += "&";
-			params += "city=" + this.state.cityFilter
+			params += "cities=" + this.state.currentFilter.cities
 		};
-		if (this.state.startDateFilter) {
+		if (this.state.currentFilter.startDate) {
 			if (params) params += "&";
-			params += "startDate=" + this.state.startDateFilter
+			params += "startDate=" + this.state.currentFilter.startDate
 		};
-		if (this.state.endDateFilter) {
+		if (this.state.currentFilter.endDate) {
 			if (params) params += "&";
-			params += "endDate=" + this.state.endDateFilter
+			params += "endDate=" + this.state.currentFilter.endDate
 		};
-		if (this.state.topicsFilter) {
+		if (this.state.currentFilter.topics) {
 			if (params) params += "&";
-			params += "topics=" + this.state.topicsFilter
+			params += "topics=" + this.state.currentFilter.topics
 		};
-		if (this.state.pagingFilter) {
+		if (this.state.currentFilter.paging) {
 			if (params) params += "&";
-			params += "paging=" + this.state.pagingFilter
+			params += "paging=" + this.state.currentFilter.paging
 		};
-		if (this.state.filterNameFilter && isSave) {
+		if (this.state.currentFilter.filterName && isSave) {
 			if (params) params += "&";
-			params += "filterName=" + this.state.filterNameFilter
+			params += "filterName=" + this.state.currentFilter.filterName
 		};
 		xhttp.send(params);
 	},
+	handleSavedFilterChange: function (event) {
+		console.log("load filter", event.target.value);
+
+		for (var i = 0; i < this.state.filters.length; i++) {
+			var filter = this.state.filters[i];
+			console.log("filter", filter);
+			if (filter.filterName == event.target.value) {
+				console.log("found filter", filter);
+				var currentFilter = [];
+				for (var key in filter) {
+					currentFilter[key] = filter[key];
+				}
+				this.setState({ currentFilter: currentFilter });
+			}
+		}
+	},
 	handleFilterChange: function (name, event) {
 		console.log(event.target.value, name);
-
-		var newStateObject = function () {
-			var newObj = {};
-			newObj[name + "Filter"] = event.target.value.substr(0, 255);
-			return newObj;
-		}.bind(event)();
-
-		this.setState(newStateObject);
-		console.log(newStateObject);
+		console.log("current", this.state.currentFilter);
+		var currentFilter = this.state.currentFilter;
+		currentFilter[name] = event.target.value.substr(0, 255);
+		this.setState({ currentFilter: currentFilter });
 	},
 	render: function () {
 		return (
 			<div>
 				<h1>Sample Event Viewer Application</h1>
-				<FilterForm filters={this.state.filters} updateFilter={this.sendFilterUpdate} saveCurrentFilter={this.saveCurrentFilter} handleFilterChange={this.handleFilterChange}/>
+				<FilterForm filters={this.state.filters} updateFilter={this.sendFilterUpdate} saveCurrentFilter={this.saveCurrentFilter}
+					handleSavedFilterChange={this.handleSavedFilterChange} handleFilterChange={this.handleFilterChange} currentFilter={this.state.currentFilter}/>
 				<EventList events={this.state.events}/>
 			</div>
 		);

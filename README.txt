@@ -65,6 +65,7 @@ Translations:
 This app will only support English
 
 Future improvements to app:
-Check received JSON before parsing
+Check JSON received from server before parsing
+Validate user input strings and provide appropriate error messages
 Seperate out text strings into a separate JSON file, for easier translation down the line
 Separate out xhr requests into a separate service for readability
