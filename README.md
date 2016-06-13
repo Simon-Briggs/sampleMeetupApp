@@ -1,6 +1,11 @@
 # React.js Event Meetup App
 
 A sample web app using React.js to display a list of events, according to a user's filters.
+- To run the server to get mock data, run "node server.js" in the root directory.
+- As web browsers block cross origin javascript requests, data needs to be served from a server, like the node server above to work.
+
+
+
 
 Prerequisites:
 Assume there is a pre-existing service for user management, including registration, login, social login, logout and a data storage system for registered users.
