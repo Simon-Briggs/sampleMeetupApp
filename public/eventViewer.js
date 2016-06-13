@@ -14,6 +14,7 @@ var EventList = React.createClass({
 				<div>Loading events...</div>
 			);
 		}
+		var counter = 0;
 		var events = this.props.events.map(function (event, index) {
 
 			//Parse the JSON so it is usable by our HTML
@@ -22,10 +23,10 @@ var EventList = React.createClass({
 				// Special case for location, as it is an object
 				if (key == "location") {
 					for (var locationKey in event[key]) {
-						tableData.push(<li className='ul--li--location'>{event[key][locationKey]}</li>);
+						tableData.push(<li key={counter++} className='ul--li--location'>{event[key][locationKey]}</li>);
 					}
 				} else {
-					tableData.push(<li className='ul--li'>{event[key]}</li>);
+					tableData.push(<li key={counter++} className='ul--li'>{event[key]}</li>);
 				}
 			}
 
@@ -49,9 +50,6 @@ var EventList = React.createClass({
  * Generate the filter bar
  */
 var FilterForm = React.createClass({
-	getInitialState: function () {
-		return {};
-	},
 	handleSubmit: function (e) {
 		e.preventDefault();
 		this.props.updateFilter();
@@ -64,9 +62,10 @@ var FilterForm = React.createClass({
 		this.props.handleFilterChange(name, event);
 	},
 	render: function () {
+		var counter = 0;
 		var savedFilters = this.props.filters.map(function (filter, index) {
 			return (
-				<option value={filter.filterName}>{filter.filterName}</option>
+				<option key={counter++} value={filter.filterName}>{filter.filterName}</option>
 			);
 		});
 
