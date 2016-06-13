@@ -37,10 +37,15 @@ The save function requires an additional parameter to the filter described above
 - A database to store events, format similar to sampleEvent.json
 - A database to store a user's filters, format similar to sampleFilter.json, with an extra parent layer so each user's filters are stored separately.
 
-Queries should ideally take under 1 second end to end.
-Searching could initially be done via SQL, but a search implementation will need to be added once the website scales.
-Caching will be used for filters, to cache results of searches, with a maximum of a 15 minute lifetime for cached results.
-Pre-caching will be done when the server first starts up, re-running searches using a list of the filters in cache from before the reboot.
+**Other requirements**
+- Websockets will be used to push data to the client if required.
+- Instead of hosting our own email server, use Google App's GMail service (or similar rival) to email users about new events. This is to reduce maintenance costs.
+- Every hour, will batch up the new events created during that hour, and send out emails to interested parties  
+- Queries should ideally take under 1 second end to end.
+- Searching could initially be done via SQL, but a search implementation will need to be added once the website scales.
+- Caching will be used for filters, to cache results of searches, with a maximum of a 15 minute lifetime for cached results.
+- Pre-caching will be done when the server first starts up, re-running searches using a list of the filters in cache from before the reboot.
+
 
 **REST API for App:**
 
