@@ -49,7 +49,6 @@ var EventList = React.createClass({
  * Generate the filter bar
  */
 var FilterForm = React.createClass({
-
 	getInitialState: function () {
 		return {};
 	},
@@ -160,11 +159,11 @@ var EventViewer = React.createClass({
 		xhttp.open("GET", "/filter", true);
 		xhttp.send();
 	},
-	// Save the current filter, server side
+	// Save the current filter on the server side
 	saveCurrentFilter: function () {
 		this.sendFilterUpdate(true);
 	},
-	//Send a POST request back to the server, updating the EventList with the new Filters
+	//Send a POST request back to the server, updating the EventList according to the new Filters
 	sendFilterUpdate: function (isSave) {
 		var xhttp = new XMLHttpRequest();
 		var _this = this;

@@ -2,6 +2,7 @@
 
 A sample web app using React.js to display a list of events, according to a user's filters.
 
+Prerequisites:
 Assume there is a pre-existing service for user management, including registration, login, social login, logout and a data storage system for registered users.
 File serving system for assets such as images, with optimised filepaths to store no more than 100 files per directory.
 
@@ -29,7 +30,7 @@ The save function requires an additional parameter to the filter described above
 
 2 databases will be used:
 A database to store events, format similar to sampleEvent.json
-A database to store a user's filters, format similar to sampleFilter.json, with an extra parent array so each user's filters are stored.
+A database to store a user's filters, format similar to sampleFilter.json, with an extra parent layer so each user's filters are stored separately.
 
 Queries should ideally take under 1 second end to end.
 Searching could initially be done via SQL, but a search implementation will need to be added once the website scales.
@@ -71,3 +72,4 @@ Check JSON received from server before parsing
 Validate user input strings and provide appropriate error messages
 Seperate out text strings into a separate JSON file, for easier translation down the line
 Separate out xhr requests into a separate service for readability
+Have a next and back button to scroll through pages of events
