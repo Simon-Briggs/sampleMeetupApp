@@ -1,4 +1,4 @@
-
+"use strict";
 /**
  * Manages the contents of the event table, and its filter
  */
@@ -9,11 +9,10 @@
 var EventList = React.createClass({
 	render: function () {
 		// Loop through the events, JSON object and print out the table
-
-		console.log("rendering table", this.props);
 		if (!this.props || !this.props.events) {
-			console.log("No events found");
-			return <span>Loading events...</span>
+			return (
+				<div>Loading events...</div>
+			);
 		}
 		var events = this.props.events.map(function (event, index) {
 
@@ -66,8 +65,6 @@ var FilterForm = React.createClass({
 		this.props.handleFilterChange(name, event);
 	},
 	render: function () {
-		console.log("rendering filter", this.props.filters);
-
 		var savedFilters = this.props.filters.map(function (filter, index) {
 			return (
 				<option value={filter.filterName}>{filter.filterName}</option>
@@ -78,7 +75,7 @@ var FilterForm = React.createClass({
 			<form onSubmit={this.handleSubmit}>
 				<div>
 					<label>Choose a saved filter: </label>
-					<select onChange={this.props.handleSavedFilterChange}>
+					<select defaultValue="none" onChange={this.props.handleSavedFilterChange}>
 						<option value="none">none</option>
 						{savedFilters}
 					</select>
@@ -145,8 +142,6 @@ var EventViewer = React.createClass({
 		var _this = this;
 		xhttp.onreadystatechange = function () {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log(JSON.parse(xhttp.response).events);
-				//TODO: check JSON before parsing
 				_this.setState({ events: JSON.parse(xhttp.response).events });
 			}
 		};
@@ -159,8 +154,6 @@ var EventViewer = React.createClass({
 		var _this = this;
 		xhttp.onreadystatechange = function () {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log(JSON.parse(xhttp.response).filters);
-				//TODO: check JSON before parsing
 				_this.setState({ filters: JSON.parse(xhttp.response).filters });
 			}
 		};
@@ -177,8 +170,6 @@ var EventViewer = React.createClass({
 		var _this = this;
 		xhttp.onreadystatechange = function () {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
-				console.log("response", JSON.parse(xhttp.response));
-				//TODO: check JSON before parsing
 				if (JSON.parse(xhttp.response).events) {
 					_this.setState({ events: JSON.parse(xhttp.response).events });
 				}
@@ -187,17 +178,15 @@ var EventViewer = React.createClass({
 				}
 			}
 		};
-		console.log("is save", isSave);
 		if (isSave) {
 			xhttp.open("POST", "/filter", true);
 		} else {
 			xhttp.open("POST", "/event", true);
 		}
-		console.log("state", this.state);
 		var params = "";
 		if (this.state.currentFilter.cities) {
 			if (params) params += "&";
-			params += "cities=" +JSON.stringify(this.state.currentFilter.cities);
+			params += "cities=" + JSON.stringify(this.state.currentFilter.cities);
 		};
 		if (this.state.currentFilter.startDate) {
 			if (params) params += "&";
@@ -217,18 +206,14 @@ var EventViewer = React.createClass({
 		};
 		if (this.state.currentFilter.filterName && isSave) {
 			if (params) params += "&";
-			params += "filterName='" + this.state.currentFilter.filterName +"'";
+			params += "filterName='" + this.state.currentFilter.filterName + "'";
 		};
 		xhttp.send(params);
 	},
 	handleSavedFilterChange: function (event) {
-		console.log("load filter", event.target.value);
-
 		for (var i = 0; i < this.state.filters.length; i++) {
 			var filter = this.state.filters[i];
-			console.log("filter", filter);
 			if (filter.filterName == event.target.value) {
-				console.log("found filter", filter);
 				var currentFilter = [];
 				for (var key in filter) {
 					currentFilter[key] = filter[key];
@@ -239,11 +224,9 @@ var EventViewer = React.createClass({
 	},
 	handleFilterChange: function (name, event) {
 		var newValue = event.target.value;
-		console.log(newValue, name);
-		console.log("current", this.state.currentFilter);
 		var currentFilter = this.state.currentFilter;
 		//Convert cities and topics from CSV to array format
-		if(name == "cities" || name == "topics") {
+		if (name == "cities" || name == "topics") {
 			newValue = newValue.split(',');
 		}
 		currentFilter[name] = newValue;
