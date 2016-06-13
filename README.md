@@ -7,22 +7,22 @@ Assume there is a pre-existing service for user management, including registrati
 File serving system for assets such as images, with optimised filepaths to store no more than 100 files per directory.
 
 An event contains the following information:
-- 1 unique event ID
-- 2 event name
-- 3 start date
-- 4 location
-- 5 topics of interest
+1. unique event ID
+2. event name
+3. start date
+4. location
+5. topics of interest
 
 Out of scope:
 - Event images
 - Registering for event/ Viewing users registered for an event
 
 For the filter, the user can specify the following:
-- 1 Name of City: Array of 0 - 100 values (Future API Improvement: Search within certain mile radius of a location)
-- 2 Start Date: null for all dates, or a timestamp
-- 3 End date: null for no end date, or a timestamp
-- 4 Topics of interest: Array of 0 - 100 values
-- 5 Paging: default 25, unless another value is specified
+1. Name of City: Array of 0 - 100 values (Future API Improvement: Search within certain mile radius of a location)
+2. Start Date: null for all dates, or a timestamp
+3. End date: null for no end date, or a timestamp
+4. Topics of interest: Array of 0 - 100 values
+5. Paging: default 25, unless another value is specified
 
 A save function saves the user's selected city, date and topic filters to a list of favorite filters.
 The save function requires an additional parameter to the filter described above:
@@ -68,11 +68,11 @@ Translations:
 This app will only support English
 
 **Future improvements to app:**
-Check JSON received from server before parsing
-Validate user input strings and provide appropriate error messages
-Seperate out text strings into a separate JSON file, for easier translation down the line
-Separate out xhr requests into a separate service for readability
-Have a next and back button to scroll through pages of events
-Use ES6/babel to separate each react class into separate files, making it more readable, and more testable
-Add tests to the project to make the build pass:
+-Check JSON received from server before parsing
+-Validate user input strings and provide appropriate error messages
+-Seperate out text strings into a separate JSON file, for easier translation down the line
+-Separate out xhr requests into a separate service for readability
+-Have a next and back button to scroll through pages of events
+-Use ES6/babel to separate each react class into separate files, making it more readable, and more testable
+-Add tests to the project to make the build pass:
  <img src="https://travis-ci.org/Simon-Briggs/sampleMeetupApp.svg?branch=master">
