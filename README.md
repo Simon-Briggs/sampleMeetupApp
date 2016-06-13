@@ -1,4 +1,4 @@
-<img src="https://travis-ci.org/Simon-Briggs/sampleMeetupApp.svg?branch=master">
+# React.js Event Meetup App <img src="https://travis-ci.org/Simon-Briggs/sampleMeetupApp.svg?branch=master">
 
 A sample web app using React.js to display a list of events, according to a user's filters.
 
